@@ -1,0 +1,43 @@
+services:
+  # auth-service:
+  #   image: samarkinivan/auth-service:latest
+  #   container_name: auth-service
+  #   restart: on-failure
+  #   environment:
+  #     ASPNETCORE_ENVIRONMENT: Development
+  #     CONNECTIONSTRINGS__DBCONNECTION: "Data Source=auth-service-db,1434;Initial Catalog=AuthDB;User Id=sa;Password=SecretPassword161;TrustServerCertificate=True"
+  #     COMMON__SECRETKEY: "secret_key_88002353535_161"
+  #     CLIENT__BASEURL: "http://147.45.78.164:3000"
+  #     RMQ__HOSTNAME: "rabbitmq"
+  #     RMQ__USERNAME: "guest"
+  #     RMQ__PASSWORD: "guest"
+  #   ports:
+  #     - "8083:8083"
+  #   depends_on:
+  #     - auth-service-db
+  #   networks:
+  #     - app-network
+
+  auth-service-db:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: auth-service-db
+    restart: on-failure
+    user: root
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: SecretPassword161
+      MSSQL_PID: Express
+      MSSQL_USER: user
+      MSSQL_PASSWORD: password
+    ports:
+      - "1434:1433"
+    networks:
+      - app-network
+    volumes:
+      - ./.meta/mssql/data:/var/opt/mssql/data
+      - ./.meta/mssql/log:/var/opt/mssql/log
+      - ./.meta/mssql/secrets:/var/opt/mssql/secrets
+
+networks:
+  app-network:
+    external: true

@@ -1,0 +1,13 @@
+.vs/*
+# .vscode/*
+.config/*
+.meta/*
+
+**/*.log
+**/bin/*
+**/obj/*
+
+**/Uploads/*
+
+**/Dockerfile
+**/docker-compose.yaml
