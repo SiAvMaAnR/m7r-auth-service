@@ -1,4 +1,4 @@
-using Auth.Domain.Common;
+﻿using Auth.Domain.Common;
 using Auth.Domain.Services;
 using Auth.Domain.Shared.Models;
 using Auth.Infrastructure.RabbitMQ;
@@ -13,36 +13,34 @@ public class AccountsIS : BaseIService, IAccountsIS
 
     public async Task<Password?> UpdatePasswordAsync(int accountId, string password)
     {
-        Password createdPassword = AuthBS.CreatePasswordHash(password);
-
-        Password? newPassword = await _rabbitMQProducer.Emit<Password>(
+        RMQResponse<Password>? response = await _rabbitMQProducer.Emit<RMQResponse<Password>>(
             RMQ.Queue.Accounts,
             RMQ.AccountsQueuePattern.UpdatePassword,
-            new { accountId, createdPassword }
+            new { accountId, password = AuthBS.CreatePasswordHash(password) }
         );
 
-        return newPassword;
+        return response?.Data;
     }
 
     public async Task<Account?> GetByIdAsync(int accountId)
     {
-        Account? account = await _rabbitMQProducer.Emit<Account>(
+        RMQResponse<Account?>? response = await _rabbitMQProducer.Emit<RMQResponse<Account?>>(
             RMQ.Queue.Accounts,
             RMQ.AccountsQueuePattern.GetById,
             new { accountId }
         );
 
-        return account;
+        return response?.Data;
     }
 
     public async Task<Account?> GetByEmailAsync(string email)
     {
-        Account? account = await _rabbitMQProducer.Emit<Account>(
+        RMQResponse<Account?>? response = await _rabbitMQProducer.Emit<RMQResponse<Account?>>(
             RMQ.Queue.Accounts,
             RMQ.AccountsQueuePattern.GetByEmail,
             new { email }
         );
 
-        return account;
+        return response?.Data;
     }
 }
