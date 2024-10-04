@@ -1,4 +1,4 @@
-using Auth.Domain.Shared.Models;
+﻿using Auth.Domain.Shared.Models;
 
 namespace Auth.Infrastructure.Services.NotificationsService;
 
