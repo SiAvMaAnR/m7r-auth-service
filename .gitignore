@@ -1,6 +1,5 @@
 .vs/*
 .vscode/*
-.config/*
 .meta/*
 
 **/appsettings.Production.json
