@@ -1,5 +1,4 @@
 .vs/*
-.vscode/*
 .meta/*
 
 **/appsettings.Production.json
@@ -7,5 +6,4 @@
 **/bin/*
 **/obj/*
 
-**/Uploads/*
 **/tasks.md
