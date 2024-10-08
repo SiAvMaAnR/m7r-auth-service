@@ -5,7 +5,6 @@ services:
     restart: on-failure
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ALLOWED_ORIGIN_URL: "http://147.45.78.164:3000"
       CONNECTIONSTRINGS__DBCONNECTION: "Data Source=auth-service-db,1434;Initial Catalog=AuthDB;User Id=sa;Password=SecretPassword161;TrustServerCertificate=True"
       COMMON__SECRETKEY: "secret_key_88002353535_161"
       CLIENT__BASEURL: "http://147.45.78.164:3000"
@@ -35,9 +34,9 @@ services:
     networks:
       - app-network
     volumes:
-      - ./.meta/auth-service/mssql/data:/var/opt/mssql/data
-      - ./.meta/auth-service/mssql/log:/var/opt/mssql/log
-      - ./.meta/auth-service/mssql/secrets:/var/opt/mssql/secrets
+      - ./.meta/mssql/data:/var/opt/mssql/data
+      - ./.meta/mssql/log:/var/opt/mssql/log
+      - ./.meta/mssql/secrets:/var/opt/mssql/secrets
 
 networks:
   app-network:
