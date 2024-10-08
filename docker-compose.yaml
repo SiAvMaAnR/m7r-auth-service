@@ -35,9 +35,9 @@ services:
     networks:
       - app-network
     volumes:
-      - ./.meta/mssql/data:/var/opt/mssql/data
-      - ./.meta/mssql/log:/var/opt/mssql/log
-      - ./.meta/mssql/secrets:/var/opt/mssql/secrets
+      - ./.meta/auth-service/mssql/data:/var/opt/mssql/data
+      - ./.meta/auth-service/mssql/log:/var/opt/mssql/log
+      - ./.meta/auth-service/mssql/secrets:/var/opt/mssql/secrets
 
 networks:
   app-network:
