@@ -20,7 +20,7 @@ public static partial class ServiceManagerExtension
         serviceCollection.AddEndpointsApiExplorer();
         serviceCollection.AddHttpContextAccessor();
         serviceCollection.AddLogging();
-        serviceCollection.AddCors(options => options.CorsConfig());
+        serviceCollection.AddCors(options => options.CorsConfig(config));
         serviceCollection.AddSwaggerGen(options => options.Config());
         serviceCollection.AddDataProtection();
         serviceCollection.AddSignalR();
