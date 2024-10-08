@@ -30,7 +30,7 @@ services:
       MSSQL_USER: user
       MSSQL_PASSWORD: password
     ports:
-      - "1433:1434"
+      - "1434:1433"
     networks:
       - app-network
     volumes:
