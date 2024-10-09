@@ -25,10 +25,8 @@ services:
     user: root
     environment:
       ACCEPT_EULA: Y
-      SA_PASSWORD: SecretPassword161
+      MSSQL_SA_PASSWORD: SecretPassword161
       MSSQL_PID: Express
-      MSSQL_USER: user
-      MSSQL_PASSWORD: password
     ports:
       - "1434:1433"
     networks:
