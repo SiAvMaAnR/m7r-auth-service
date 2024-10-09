@@ -27,8 +27,6 @@ services:
       ACCEPT_EULA: Y
       MSSQL_SA_PASSWORD: SecretPassword161
       MSSQL_PID: Express
-      MSSQL_USER: user
-      MSSQL_PASSWORD: password
     ports:
       - "1434:1433"
     networks:
