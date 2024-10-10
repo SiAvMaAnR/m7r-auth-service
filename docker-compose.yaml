@@ -5,7 +5,7 @@ services:
     restart: on-failure
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      CONNECTIONSTRINGS__DBCONNECTION: "Data Source=auth-service-db,1434;Initial Catalog=AuthDB;User Id=sa;Password=SecretPassword161;TrustServerCertificate=True"
+      CONNECTIONSTRINGS__DBCONNECTION: "Data Source=auth-service-db,1433;Initial Catalog=AuthDB;User Id=sa;Password=SecretPassword161;TrustServerCertificate=True"
       COMMON__SECRETKEY: "secret_key_88002353535_161"
       CLIENT__BASEURL: "http://147.45.78.164:3000"
       RMQ__HOSTNAME: "rabbitmq"
