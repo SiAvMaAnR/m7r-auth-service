@@ -28,6 +28,7 @@ public class RabbitMQBase
         var factory = new ConnectionFactory()
         {
             HostName = appSettings.RMQ.HostName,
+            Port = appSettings.RMQ.Port,
             UserName = appSettings.RMQ.UserName,
             Password = appSettings.RMQ.Password
         };
