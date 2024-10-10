@@ -13,6 +13,6 @@ COPY --from=build-env /App/out .
 
 ENV ASPNETCORE_ENVIRONMENT=Development
 
-EXPOSE 8081
+EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "Auth.WebApi.dll"]
