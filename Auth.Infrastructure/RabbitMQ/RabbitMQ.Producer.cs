@@ -10,7 +10,7 @@ public class RabbitMQProducer : RabbitMQBase, IRabbitMQProducer
     public RabbitMQProducer(IAppSettings appSettings)
         : base(appSettings) { }
 
-    public void Send(string queue, string pattern, object message)
+    public void Send(string queue, string pattern, object? message)
     {
         byte[] body = MessageAdapter(message, pattern);
 
@@ -24,14 +24,17 @@ public class RabbitMQProducer : RabbitMQBase, IRabbitMQProducer
         );
     }
 
-    public void SendReply(string queue, string pattern, object message)
+     public void SendReply(string queue, string correlationId, string pattern, object? message)
     {
         byte[] body = MessageAdapter(message, pattern);
+
+        IBasicProperties properties = _channel.CreateBasicProperties();
+        properties.CorrelationId = correlationId;
 
         _channel.BasicPublish(
             exchange: string.Empty,
             routingKey: queue,
-            basicProperties: null,
+            basicProperties: properties,
             body: body
         );
     }

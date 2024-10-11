@@ -4,7 +4,7 @@ using Auth.Domain.Shared.Models;
 using Auth.Infrastructure.RabbitMQ;
 using Auth.Infrastructure.Services.Common;
 
-namespace Auth.Infrastructure.Services.NotificationsService;
+namespace Auth.Infrastructure.Services.AccountsService;
 
 public class AccountsIS : BaseIService, IAccountsIS
 {

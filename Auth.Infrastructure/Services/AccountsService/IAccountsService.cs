@@ -1,6 +1,6 @@
 ﻿using Auth.Domain.Shared.Models;
 
-namespace Auth.Infrastructure.Services.NotificationsService;
+namespace Auth.Infrastructure.Services.AccountsService;
 
 public interface IAccountsIS
 {
