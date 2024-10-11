@@ -35,7 +35,7 @@ public class RabbitMQBase
         return factory.CreateConnection();
     }
 
-    protected static byte[] MessageAdapter(object message, string? pattern = null)
+    protected static byte[] MessageAdapter(object? message, string? pattern = null)
     {
         string adaptedMessage = JsonSerializer.Serialize(new { pattern, data = message });
 

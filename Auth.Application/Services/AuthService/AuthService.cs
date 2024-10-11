@@ -8,6 +8,7 @@ using Auth.Domain.Exceptions;
 using Auth.Domain.Services;
 using Auth.Domain.Shared.Constants.Common;
 using Auth.Domain.Shared.Models;
+using Auth.Infrastructure.Services.AccountsService;
 using Auth.Infrastructure.Services.NotificationsService;
 using Auth.Infrastructure.Services.NotificationsService.Models;
 using Microsoft.AspNetCore.DataProtection;

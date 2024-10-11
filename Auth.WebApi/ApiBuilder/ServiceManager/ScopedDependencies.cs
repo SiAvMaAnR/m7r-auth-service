@@ -1,6 +1,7 @@
 ﻿using Auth.Application.Services.AuthService;
 using Auth.Domain.Common;
 using Auth.Domain.Services;
+using Auth.Infrastructure.Services.AccountsService;
 using Auth.Infrastructure.Services.NotificationsService;
 using Auth.Persistence.UnitOfWork;
 
