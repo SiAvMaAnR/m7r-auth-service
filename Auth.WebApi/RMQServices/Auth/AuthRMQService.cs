@@ -49,10 +49,13 @@ public partial class AuthRMQService : RMQService
             {
                 byte[] body = args.Body.ToArray();
                 string bodyJson = Encoding.UTF8.GetString(body);
+                JsonSerializerOptions serializerOptions = RabbitMQBase.JsonSerializerOptions;
 
                 RMQResponse<JsonElement> result =
-                    JsonSerializer.Deserialize<RMQResponse<JsonElement>>(bodyJson)
-                    ?? throw new IncorrectDataException("Failed to deserialize json");
+                    JsonSerializer.Deserialize<RMQResponse<JsonElement>>(
+                        bodyJson,
+                        serializerOptions
+                    ) ?? throw new IncorrectDataException("Failed to deserialize json");
 
                 string replyQueue = args.BasicProperties.ReplyTo;
                 string correlationId = args.BasicProperties.CorrelationId;
@@ -66,7 +69,7 @@ public partial class AuthRMQService : RMQService
                     RMQ.AuthQueuePattern.Login
                         => LoginAsync(
                             args.BasicProperties,
-                            JsonSerializer.Deserialize<LoginData>(result.Data)!,
+                            JsonSerializer.Deserialize<LoginData>(result.Data, serializerOptions)!,
                             authService
                         ),
                     _ => throw new OperationNotAllowedException("Message pattern not found")
