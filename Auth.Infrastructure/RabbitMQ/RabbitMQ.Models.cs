@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Auth.Infrastructure.RabbitMQ;
 
@@ -36,4 +37,12 @@ public class RMQResponse<TData>
 
     [JsonPropertyName("data")]
     public required TData Data { get; set; }
+}
+
+public class DeliverEventData
+{
+    public required RMQResponse<JsonElement> DeserializedResponse { get; set; }
+    public required string ReplyQueue { get; set; }
+    public required string CorrelationId { get; set; }
+    public required JsonSerializerOptions SerializerOptions { get; set; }
 }

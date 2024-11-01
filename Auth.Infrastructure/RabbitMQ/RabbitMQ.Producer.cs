@@ -24,7 +24,7 @@ public class RabbitMQProducer : RabbitMQBase, IRabbitMQProducer
         );
     }
 
-     public void SendReply(string queue, string correlationId, string pattern, object? message)
+    public void SendReply(string queue, string correlationId, string pattern, object? message)
     {
         byte[] body = MessageAdapter(message, pattern);
 

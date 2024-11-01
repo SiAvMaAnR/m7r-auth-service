@@ -1,7 +1,9 @@
 ﻿using System.Text;
 using System.Text.Json;
 using Auth.Domain.Common;
+using Auth.Domain.Exceptions;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
 namespace Auth.Infrastructure.RabbitMQ;
 
@@ -18,6 +20,27 @@ public class RabbitMQBase
         _appSettings = appSettings;
         _connection = CreateConnection(appSettings);
         _channel = _connection.CreateModel();
+    }
+
+    public static DeliverEventData GetDeliverEventData(BasicDeliverEventArgs args)
+    {
+        byte[] body = args.Body.ToArray();
+        string bodyJson = Encoding.UTF8.GetString(body);
+
+        RMQResponse<JsonElement> deserializedResponse =
+            JsonSerializer.Deserialize<RMQResponse<JsonElement>>(bodyJson, JsonSerializerOptions)
+            ?? throw new IncorrectDataException("Failed to deserialize json");
+
+        string replyQueue = args.BasicProperties.ReplyTo;
+        string correlationId = args.BasicProperties.CorrelationId;
+
+        return new DeliverEventData()
+        {
+            DeserializedResponse = deserializedResponse,
+            ReplyQueue = replyQueue,
+            CorrelationId = correlationId,
+            SerializerOptions = JsonSerializerOptions
+        };
     }
 
     protected void CreateQueue(string queue)
