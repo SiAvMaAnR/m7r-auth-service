@@ -14,7 +14,7 @@ public class NotificationsIS : BaseIService, INotificationsIS
         NotificationsIServiceSendEmailRequest request
     )
     {
-        _rabbitMQProducer.Send(
+        _rabbitMQProducer.Emit(
             RMQ.Queue.Notifications,
             RMQ.NotificationsQueuePattern.SendEmail,
             new

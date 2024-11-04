@@ -32,11 +32,11 @@ public partial class AuthRMQService : RMQService
             new AuthServiceLoginRequest() { Email = args.Email, Password = args.Password }
         );
 
-        _producer.SendReply(
+        _producer.Emit(
             basicProperties.ReplyTo,
-            basicProperties.CorrelationId,
             RMQ.AuthQueuePattern.Login,
-            response
+            response,
+            basicProperties.CorrelationId
         );
     }
 

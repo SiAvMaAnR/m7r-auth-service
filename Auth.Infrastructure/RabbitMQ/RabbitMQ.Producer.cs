@@ -10,26 +10,25 @@ public class RabbitMQProducer : RabbitMQBase, IRabbitMQProducer
     public RabbitMQProducer(IAppSettings appSettings)
         : base(appSettings) { }
 
-    public void Send(string queue, string pattern, object? message)
+    public void Emit(
+        string queue,
+        string pattern,
+        object? message,
+        string? correlationId = null,
+        string? replyQueue = null
+    )
     {
         byte[] body = MessageAdapter(message, pattern);
 
-        CreateQueue(queue);
-
-        _channel.BasicPublish(
-            exchange: string.Empty,
-            routingKey: queue,
-            basicProperties: null,
-            body: body
-        );
-    }
-
-    public void SendReply(string queue, string correlationId, string pattern, object? message)
-    {
-        byte[] body = MessageAdapter(message, pattern);
+        if (correlationId == null)
+        {
+            CreateQueue(queue);
+        }
 
         IBasicProperties properties = _channel.CreateBasicProperties();
+
         properties.CorrelationId = correlationId;
+        properties.ReplyTo = replyQueue;
 
         _channel.BasicPublish(
             exchange: string.Empty,
@@ -39,7 +38,7 @@ public class RabbitMQProducer : RabbitMQBase, IRabbitMQProducer
         );
     }
 
-    public async Task<TResponse?> Emit<TResponse>(string queue, string pattern, object message)
+    public async Task<TResponse?> Send<TResponse>(string queue, string pattern, object message)
     {
         byte[] body = MessageAdapter(message, pattern);
 
