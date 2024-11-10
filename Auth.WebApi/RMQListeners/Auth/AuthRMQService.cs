@@ -44,10 +44,8 @@ public partial class AuthRMQService : RMQService
     {
         _consumer.AddListener(
             _queueName,
-            async (_, args) =>
+            async (_, deliverEventData) =>
             {
-                DeliverEventData deliverEventData = RabbitMQBase.GetDeliverEventData(args);
-
                 using IServiceScope scope = _serviceScopeFactory.CreateScope();
 
                 IAuthService authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
@@ -59,7 +57,7 @@ public partial class AuthRMQService : RMQService
                 {
                     RMQ.AuthQueuePattern.Login
                         => LoginAsync(
-                            args.BasicProperties,
+                            deliverEventData.BasicProperties,
                             JsonSerializer.Deserialize<LoginData>(
                                 deserializedResponse.Data,
                                 deliverEventData.SerializerOptions

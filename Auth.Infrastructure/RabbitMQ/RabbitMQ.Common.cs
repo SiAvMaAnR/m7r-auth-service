@@ -2,6 +2,7 @@
 using System.Text.Json;
 using Auth.Domain.Common;
 using Auth.Domain.Exceptions;
+using Auth.Domain.Exceptions.Common;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -36,6 +37,7 @@ public class RabbitMQBase
 
         return new DeliverEventData()
         {
+            BasicProperties = args.BasicProperties,
             DeserializedResponse = deserializedResponse,
             ReplyQueue = replyQueue,
             CorrelationId = correlationId,
@@ -68,8 +70,21 @@ public class RabbitMQBase
 
     protected static byte[] MessageAdapter(object? message, string? pattern = null)
     {
+        bool isException = message is Exception;
+
         string adaptedMessage = JsonSerializer.Serialize(
-            new { pattern, data = message },
+            new
+            {
+                pattern,
+                data = isException ? null : message,
+                error = isException
+                    ? new
+                    {
+                        (message as Exception)?.Message,
+                        (message as BusinessException)?.ClientMessage,
+                    }
+                    : null
+            },
             JsonSerializerOptions
         );
 

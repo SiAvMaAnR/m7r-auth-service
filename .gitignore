@@ -1,7 +1,7 @@
 .vs/*
 .meta/*
+.logs/*
 
-**/appsettings.Production.json
 **/*.log
 **/bin/*
 **/obj/*
