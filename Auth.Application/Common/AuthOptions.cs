@@ -16,7 +16,7 @@ public static class AuthOptions
 
         DateTime expires = DateTime.Now.AddMinutes(double.Parse(tokenParams[TokenClaim.AccessTokenLifeTime]));
 
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
 
         var token = new JwtSecurityToken(
             audience: tokenParams[TokenClaim.Audience],

@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Auth.WebApi.RMQServices;
+﻿namespace Auth.WebApi.RMQListeners;
 
 public partial class AuthRMQService
 {

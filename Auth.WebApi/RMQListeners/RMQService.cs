@@ -1,6 +1,6 @@
 ﻿using Auth.Infrastructure.RabbitMQ;
 
-namespace Auth.WebApi.RMQServices;
+namespace Auth.WebApi.RMQListeners;
 
 public abstract class RMQService : BackgroundService
 {

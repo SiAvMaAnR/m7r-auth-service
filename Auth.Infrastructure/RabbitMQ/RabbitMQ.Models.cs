@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using RabbitMQ.Client;
 
 namespace Auth.Infrastructure.RabbitMQ;
 
@@ -29,11 +31,29 @@ public static class RMQ
     }
 }
 
+public class RMQError
+{
+    public string? ClientMessage { get; set; }
+    public required string Message { get; set; }
+}
+
 public class RMQResponse<TData>
 {
     [JsonPropertyName("pattern")]
     public required string Pattern { get; set; }
 
     [JsonPropertyName("data")]
-    public required TData Data { get; set; }
+    public required TData? Data { get; set; }
+
+    [JsonPropertyName("error")]
+    public required RMQError? Error { get; set; }
+}
+
+public class DeliverEventData
+{
+    public required RMQResponse<JsonElement> DeserializedResponse { get; set; }
+    public required IBasicProperties BasicProperties { get; set; }
+    public required string ReplyQueue { get; set; }
+    public required string CorrelationId { get; set; }
+    public required JsonSerializerOptions SerializerOptions { get; set; }
 }

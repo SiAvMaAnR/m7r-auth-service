@@ -1,12 +1,11 @@
-﻿using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Auth.Application.Services.AuthService;
 using Auth.Application.Services.AuthService.Models;
 using Auth.Domain.Exceptions;
 using Auth.Infrastructure.RabbitMQ;
 using RabbitMQ.Client;
 
-namespace Auth.WebApi.RMQServices;
+namespace Auth.WebApi.RMQListeners;
 
 public partial class AuthRMQService : RMQService
 {
@@ -25,19 +24,19 @@ public partial class AuthRMQService : RMQService
 
     public async Task LoginAsync(
         IBasicProperties basicProperties,
-        LoginData data,
+        LoginData args,
         IAuthService authService
     )
     {
         AuthServiceLoginResponse response = await authService.LoginAsync(
-            new AuthServiceLoginRequest() { Email = data.Email, Password = data.Password }
+            new AuthServiceLoginRequest() { Email = args.Email, Password = args.Password }
         );
 
-        _producer.SendReply(
+        _producer.Emit(
             basicProperties.ReplyTo,
-            basicProperties.CorrelationId,
             RMQ.AuthQueuePattern.Login,
-            response
+            response,
+            basicProperties.CorrelationId
         );
     }
 
@@ -45,28 +44,24 @@ public partial class AuthRMQService : RMQService
     {
         _consumer.AddListener(
             _queueName,
-            async (_, args) =>
+            async (_, deliverEventData) =>
             {
-                byte[] body = args.Body.ToArray();
-                string bodyJson = Encoding.UTF8.GetString(body);
-
-                RMQResponse<JsonElement> result =
-                    JsonSerializer.Deserialize<RMQResponse<JsonElement>>(bodyJson)
-                    ?? throw new IncorrectDataException("Failed to deserialize json");
-
-                string replyQueue = args.BasicProperties.ReplyTo;
-                string correlationId = args.BasicProperties.CorrelationId;
-
                 using IServiceScope scope = _serviceScopeFactory.CreateScope();
 
                 IAuthService authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
 
-                Task task = result.Pattern switch
+                RMQResponse<JsonElement> deserializedResponse =
+                    deliverEventData.DeserializedResponse;
+
+                Task task = deserializedResponse.Pattern switch
                 {
                     RMQ.AuthQueuePattern.Login
                         => LoginAsync(
-                            args.BasicProperties,
-                            JsonSerializer.Deserialize<LoginData>(result.Data)!,
+                            deliverEventData.BasicProperties,
+                            JsonSerializer.Deserialize<LoginData>(
+                                deserializedResponse.Data,
+                                deliverEventData.SerializerOptions
+                            )!,
                             authService
                         ),
                     _ => throw new OperationNotAllowedException("Message pattern not found")

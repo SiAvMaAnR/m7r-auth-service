@@ -1,4 +1,4 @@
-﻿using Auth.WebApi.RMQServices;
+﻿using Auth.WebApi.RMQListeners;
 
 namespace Auth.WebApi.ApiBuilder.ServiceManager;
 
