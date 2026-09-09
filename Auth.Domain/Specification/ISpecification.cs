@@ -3,10 +3,15 @@ using Auth.Domain.Entities;
 
 namespace Auth.Domain.Specification;
 
-public interface ISingleSpecification<TEntity>
+public interface ICriteriaSpecification<TEntity>
     where TEntity : BaseEntity
 {
     Expression<Func<TEntity, bool>>? Criteria { get; }
+}
+
+public interface ISingleSpecification<TEntity> : ICriteriaSpecification<TEntity>
+    where TEntity : BaseEntity
+{
     ICollection<Expression<Func<TEntity, object?>>> Includes { get; }
     ICollection<string> IncludeStrings { get; }
     bool IsAsNoTracking { get; }

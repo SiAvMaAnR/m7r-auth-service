@@ -9,6 +9,7 @@ public interface IAsyncRepository<TEntity>
     Task AddAsync(TEntity entity);
     void Update(TEntity entity);
     void Delete(TEntity entity);
+    Task<int> DeleteAllAsync(ICriteriaSpecification<TEntity> specification);
     Task<TEntity?> GetAsync(ISingleSpecification<TEntity> specification);
     Task<IEnumerable<TEntity>> GetAllAsync(ISpecification<TEntity>? specification = null);
     Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);

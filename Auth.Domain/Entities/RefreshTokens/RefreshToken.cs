@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Auth.Domain.Security;
 
 namespace Auth.Domain.Entities.RefreshTokens;
 
@@ -15,4 +16,12 @@ public partial class RefreshToken : BaseEntity
     public string Token { get; private set; }
     public DateTime ExpiryTime { get; private set; }
     public int AccountId { get; private set; }
+
+    public static RefreshToken Create(int accountId, string rawToken, double lifeTimeMinutes)
+    {
+        string tokenHash = RefreshTokenHasher.Hash(rawToken);
+        DateTime expiryTime = DateTime.UtcNow.AddMinutes(lifeTimeMinutes);
+
+        return new RefreshToken(tokenHash, expiryTime, accountId);
+    }
 }

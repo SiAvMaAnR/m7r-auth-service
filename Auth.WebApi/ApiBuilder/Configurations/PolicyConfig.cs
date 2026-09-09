@@ -1,9 +1,9 @@
-﻿using Auth.Domain.Shared.Constants.Common;
+using Auth.Domain.Shared.Constants.Common;
 using Auth.Domain.Shared.Settings;
 using Auth.Infrastructure.AppSettings;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 
-namespace Auth.WebApi.ApiBuilder.Other;
+namespace Auth.WebApi.ApiBuilder.Configurations;
 
 public static class PolicyConfigExtension
 {

@@ -1,5 +1,5 @@
 ﻿using Auth.Persistence.DBContext;
-using Auth.WebApi.ApiBuilder.Other;
+using Auth.WebApi.ApiBuilder.Configurations;
 using Auth.WebApi.Common;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,11 +16,13 @@ public static partial class ServiceManagerExtension
 
         serviceCollection.AddOptions();
         serviceCollection.AddDbContext<EFContext>(options => options.UseNpgsql(connection));
+        serviceCollection.AddHealthChecks();
         serviceCollection.AddControllers();
         serviceCollection.AddEndpointsApiExplorer();
         serviceCollection.AddHttpContextAccessor();
         serviceCollection.AddLogging();
         serviceCollection.AddCors(options => options.CorsConfig(config));
+        serviceCollection.AddRateLimiter(options => options.RateLimiterConfig());
         serviceCollection.AddSwaggerGen(options => options.Config());
         serviceCollection.AddDataProtection();
         serviceCollection.AddSignalR();

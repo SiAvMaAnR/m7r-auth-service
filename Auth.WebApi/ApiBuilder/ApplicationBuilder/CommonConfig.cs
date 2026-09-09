@@ -11,6 +11,7 @@ public static partial class ApplicationBuilderExtension
         webApplication.UseCors(CorsPolicyName.Default);
         webApplication.UseHttpsRedirection();
         webApplication.UseRouting();
+        webApplication.UseRateLimiter();
         webApplication.MapControllers();
     }
 }

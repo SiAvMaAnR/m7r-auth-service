@@ -1,5 +1,5 @@
 ﻿using Auth.Domain.Common;
-using Auth.Domain.Services;
+using Auth.Domain.Security;
 using Auth.Domain.Shared.Models;
 using Auth.Infrastructure.RabbitMQ;
 using Auth.Infrastructure.Services.Common;
@@ -16,7 +16,7 @@ public class AccountsIS : BaseIService, IAccountsIS
         RMQResponse<Password>? response = await _rabbitMQProducer.Send<RMQResponse<Password>>(
             RMQ.Queue.Accounts,
             RMQ.AccountsQueuePattern.UpdatePassword,
-            new { accountId, password = AuthBS.CreatePasswordHash(password) }
+            new { accountId, password = PasswordHasher.Create(password) }
         );
 
         return response?.Data;

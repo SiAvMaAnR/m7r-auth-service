@@ -1,7 +1,9 @@
 ﻿using Auth.Application.Services.AuthService;
 using Auth.Application.Services.AuthService.Models;
+using Auth.Domain.Shared.Constants.Common;
 using Auth.WebApi.Controllers.Models.Auth;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Auth.WebApi.Controllers;
 
@@ -17,6 +19,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
+    [EnableRateLimiting(RateLimiterPolicyName.Auth)]
     public async Task<IActionResult> Login([FromBody] AuthControllerLoginRequest request)
     {
         AuthServiceLoginResponse response = await _authService.LoginAsync(
@@ -27,6 +30,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("reset-token")]
+    [EnableRateLimiting(RateLimiterPolicyName.Auth)]
     public async Task<IActionResult> ResetToken([FromBody] AuthControllerResetTokenRequest request)
     {
         AuthServiceResetTokenResponse response = await _authService.ResetTokenAsync(
@@ -37,6 +41,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("reset-password")]
+    [EnableRateLimiting(RateLimiterPolicyName.Auth)]
     public async Task<IActionResult> ResetPassword(
         [FromBody] AuthControllerResetPasswordRequest request
     )

@@ -1,8 +1,8 @@
-﻿using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Auth.WebApi.ApiBuilder.Other;
+namespace Auth.WebApi.ApiBuilder.Configurations;
 
 public static class SwaggerExtension
 {

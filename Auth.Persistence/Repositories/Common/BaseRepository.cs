@@ -31,6 +31,16 @@ public class BaseRepository<TEntity> : IAsyncRepository<TEntity>
         _dbSet.Remove(entity);
     }
 
+    public virtual async Task<int> DeleteAllAsync(ICriteriaSpecification<TEntity> specification)
+    {
+        IQueryable<TEntity> query = _dbSet;
+
+        if (specification.Criteria != null)
+            query = query.Where(specification.Criteria);
+
+        return await query.ExecuteDeleteAsync();
+    }
+
     public virtual async Task<TEntity?> GetAsync(ISingleSpecification<TEntity> specification)
     {
         return await _dbSet.GetQueryForOneAsync(specification);
